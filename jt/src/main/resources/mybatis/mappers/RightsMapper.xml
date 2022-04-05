@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jt.mapper.RightsMapper">
+
+    <!--利用子查询的方式实现数据获取
+        1.查询主表信息
+     -->
+    <select id="getRightsList" resultMap="rightsRM">
+        select * from rights where parent_id = 0
+    </select>
+    <resultMap id="rightsRM" type="Rights" autoMapping="true">
+        <!--主键信息-->
+        <id property="id" column="id"></id>
+        <collection property="children" ofType="Rights"
+                    select="findChildren" column="id"/>
+    </resultMap>
+    <select id="findChildren" resultType="Rights">
+        select * from rights where parent_id = #{id}
+    </select>
+
+
+    <!-- <select id="getRightsList" resultMap="rightsRM">
+       select p.id,p.name,p.parent_id,p.path,p.level,p.created,p.updated,
+       c.id c_id,c.name c_name,c.parent_id c_parent_id,c.path c_path,
+       c.level c_level,c.created c_created,c.updated c_updated
+	    from
+            rights p
+	    left join
+            rights c
+	    on
+	        c.parent_id = p.id
+        where p.parent_id = 0
+    </select>
+
+    <resultMap id="rightsRM" type="Rights" autoMapping="true">
+        &lt;!&ndash;Id代表主键信息&ndash;&gt;
+        <id column="id" property="id"/>
+        &lt;!&ndash;一对一封装子级菜单List集合&ndash;&gt;
+        <collection property="children" ofType="Rights">
+            &lt;!&ndash;封装主键ID&ndash;&gt;
+            <id column="c_id" property="id"/>
+            <result column="c_name" property="name"/>
+            <result column="c_parent_id" property="parentId"/>
+            <result column="c_path" property="path"/>
+            <result column="c_level" property="level"/>
+            <result column="c_created" property="created"/>
+            <result column="c_updated" property="updated"/>
+        </collection>
+    </resultMap>-->
+
+</mapper>

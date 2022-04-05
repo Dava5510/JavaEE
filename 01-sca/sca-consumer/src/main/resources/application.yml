@@ -1,0 +1,24 @@
+server:
+  port: 8090
+spring:
+  application:
+    name: sca-consumer
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+#客户端负载均衡
+sca-provider: #要访问的服务名(这个服务名可能会对应着多个服务实例)
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RoundRobinRule #负载均衡算法
+
+feign:
+  hystrix:
+    enabled: false #false，true表示启动超时熔断机制
+  client:
+    config:
+     default: #表示所有服务均采用此配置，也可以指定具体服务名(remoteProviderService)。
+        connectTimeout: 20000 #连接超时
+        readTimeout: 20000 #读取数据超时
+

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jt.mapper.UserMapper">
+    <!--
+        resultType: 适合单表查询
+        resultMap:  1.多表关联查询  2.字段名称和属性不一致的时候使用
+        if 判断条件
+               test="query !=null and query !='' 表示同时不满足时条件成立
+    -->
+    <select id="findUserListByPage" resultType="User">
+        select * from user
+            <where>
+                <if test="query !=null and query !='' ">username like "%"#{query}"%"</if>
+            </where>
+        limit #{start},#{size}
+    </select>
+    
+    <!--完成用户新增操作-->
+    <insert id="addUser">
+        insert into user(id,username,password,phone,
+                        email,status,created,updated)
+                value
+                        (null,#{username},#{password},#{phone},
+                        #{email},#{status},#{created},#{updated})
+    </insert>
+
+
+
+</mapper>

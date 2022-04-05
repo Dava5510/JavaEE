@@ -1,0 +1,19 @@
+server:
+  port: 8061
+spring:
+  application:
+    name: sso-system
+  datasource: #后续可以写到配置中心
+    url: jdbc:mysql://localhost:3306/jt-sso?serverTimezone=Asia/Shanghai&characterEncoding=utf8
+    password: root
+    username: root
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        server-addr: localhost:8848
+        file-extension: yml
+logging: #后续可以写到配置中心
+  level:
+    com.jt: debug #默认为info
